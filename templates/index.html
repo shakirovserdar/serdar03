@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Serdar Şakirov</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            background: #f8f5f0; /* Süt rengi */
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+        .container { 
+            max-width: 800px; 
+            margin: 0 auto; 
+            background: white; 
+            padding: 30px; 
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        h1 { 
+            color: #2c3e50; 
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            text-align: center;
+            color: #7f8c8d;
+            margin-bottom: 30px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        input, textarea { 
+            width: 100%; 
+            padding: 15px; 
+            margin: 5px 0; 
+            border: 1px solid #ddd; 
+            border-radius: 8px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        button { 
+            background: #3498db; 
+            color: white; 
+            padding: 15px; 
+            border: none; 
+            width: 100%; 
+            cursor: pointer;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background: #2980b9;
+        }
+        .message { 
+            background: #f9f9f9; 
+            padding: 20px; 
+            margin: 20px 0; 
+            border-left: 5px solid #3498db;
+            border-radius: 8px;
+        }
+        .message strong {
+            color: #2c3e50;
+            font-size: 1.1em;
+        }
+        .message small {
+            color: #95a5a6;
+            display: block;
+            margin-top: 10px;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            color: #7f8c8d;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Serdar Şakirov</h1>
+        <p class="subtitle">Kişisel Web Sitesi</p>
+        
+        <form method="POST">
+            <div class="form-group">
+                <input type="text" name="isim" placeholder="Adınız" required>
+            </div>
+            <div class="form-group">
+                <textarea name="mesaj" rows="5" placeholder="Mesajınızı buraya yazın..." required></textarea>
+            </div>
+            <button type="submit">📨 Mesaj Gönder</button>
+        </form>
+        
+        <h2>📝 Mesajlar</h2>
+        {% if mesajlar %}
+            {% for mesaj in mesajlar %}
+            <div class="message">
+                <strong>{{ mesaj['isim'] }}</strong>
+                <p>{{ mesaj['mesaj'] }}</p>
+                <small>{{ mesaj['tarih'] }}</small>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="message">
+                <p>Henüz mesaj yok. İlk mesajı siz yazın! ✨</p>
+            </div>
+        {% endif %}
+        
+        <div class="footer">
+            <p>Son güncelleme: {{ su_an.strftime('%d.%m.%Y %H:%M') }}</p>
+        </div>
+    </div>
+</body>
+</html>
