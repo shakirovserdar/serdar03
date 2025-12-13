@@ -1,119 +1,147 @@
 <!DOCTYPE html>
-<html>
+<html lang="tr">
 <head>
-    <title>Serdar Şakirov</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <style>
-        body { 
-            font-family: Arial, sans-serif; 
-            background: #f8f5f0; /* Süt rengi */
-            color: #333;
-            margin: 0;
-            padding: 20px;
-        }
-        .container { 
-            max-width: 800px; 
-            margin: 0 auto; 
-            background: white; 
-            padding: 30px; 
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-        }
-        h1 { 
-            color: #2c3e50; 
-            text-align: center;
-            margin-bottom: 10px;
-        }
-        .subtitle {
-            text-align: center;
-            color: #7f8c8d;
-            margin-bottom: 30px;
-        }
-        .form-group {
-            margin-bottom: 20px;
-        }
-        input, textarea { 
-            width: 100%; 
-            padding: 15px; 
-            margin: 5px 0; 
-            border: 1px solid #ddd; 
-            border-radius: 8px;
-            font-size: 16px;
-            box-sizing: border-box;
-        }
-        button { 
-            background: #3498db; 
-            color: white; 
-            padding: 15px; 
-            border: none; 
-            width: 100%; 
-            cursor: pointer;
-            border-radius: 8px;
-            font-size: 18px;
-            font-weight: bold;
-            transition: background 0.3s;
-        }
-        button:hover {
-            background: #2980b9;
-        }
-        .message { 
-            background: #f9f9f9; 
-            padding: 20px; 
-            margin: 20px 0; 
-            border-left: 5px solid #3498db;
-            border-radius: 8px;
-        }
-        .message strong {
-            color: #2c3e50;
-            font-size: 1.1em;
-        }
-        .message small {
-            color: #95a5a6;
-            display: block;
-            margin-top: 10px;
-        }
-        .footer {
-            text-align: center;
-            margin-top: 40px;
-            color: #7f8c8d;
-            font-size: 0.9em;
-        }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚀 SERDAR SHAKIROV | ULTRA MEGA SÜPER SİTE</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔥</text></svg>">
 </head>
 <body>
-    <div class="container">
-        <h1>Serdar Şakirov</h1>
-        <p class="subtitle">Kişisel Web Sitesi</p>
-        
-        <form method="POST">
-            <div class="form-group">
-                <input type="text" name="isim" placeholder="Adınız" required>
-            </div>
-            <div class="form-group">
-                <textarea name="mesaj" rows="5" placeholder="Mesajınızı buraya yazın..." required></textarea>
-            </div>
-            <button type="submit">📨 Mesaj Gönder</button>
-        </form>
-        
-        <h2>📝 Mesajlar</h2>
-        {% if mesajlar %}
-            {% for mesaj in mesajlar %}
-            <div class="message">
-                <strong>{{ mesaj['isim'] }}</strong>
-                <p>{{ mesaj['mesaj'] }}</p>
-                <small>{{ mesaj['tarih'] }}</small>
-            </div>
-            {% endfor %}
-        {% else %}
-            <div class="message">
-                <p>Henüz mesaj yok. İlk mesajı siz yazın! ✨</p>
-            </div>
-        {% endif %}
-        
-        <div class="footer">
-            <p>Son güncelleme: {{ su_an.strftime('%d.%m.%Y %H:%M') }}</p>
-        </div>
+    <!-- ARKA PLAN ELEMENTLERİ -->
+    <div class="background-elements">
+        <div class="floating-shape shape-1"></div>
+        <div class="floating-shape shape-2"></div>
+        <div class="floating-shape shape-3"></div>
     </div>
+    
+    <!-- ANA İÇERİK -->
+    <div class="main-container">
+        <!-- SOL PANEL -->
+        <div class="left-panel">
+            <!-- HERO BÖLÜMÜ -->
+            <section class="hero-section">
+                <h1 class="hero-title">SERDAR SHAKIROV</h1>
+                <p class="hero-subtitle">ULTRA MEGA SÜPER DİJİTAL PLATFORM</p>
+                
+                <div class="typewriter-container">
+                    <span class="typewriter-text" id="typewriterText"></span>
+                </div>
+                
+                <div style="margin-top: 40px; color: var(--text-muted); font-size: 1.2rem;">
+                    <p>✨ Modern teknoloji + Sanatsal tasarım = Bu site</p>
+                    <p style="margin-top: 10px;">🚀 Kaygan paneller • Canlı etkileşim • Dinamik animasyonlar</p>
+                </div>
+            </section>
+            
+            <!-- MESAJ FORMU -->
+            <section class="message-form-section">
+                <h2 class="section-title">BANA MESAJ GÖNDER</h2>
+                <form id="messageForm">
+                    <div class="form-group">
+                        <label class="form-label" for="nameInput">Adınız</label>
+                        <input type="text" 
+                               id="nameInput" 
+                               class="form-input" 
+                               placeholder="İsminizi yazın" 
+                               required
+                               maxlength="50">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="messageInput">Mesajınız</label>
+                        <textarea id="messageInput" 
+                                  class="form-textarea" 
+                                  placeholder="Mesajınızı detaylı şekilde yazın..." 
+                                  required
+                                  maxlength="500"
+                                  rows="6"></textarea>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn">
+                        MESAJI GÖNDER
+                    </button>
+                </form>
+            </section>
+            
+            <!-- MESAJLAR LİSTESİ -->
+            <section class="messages-section">
+                <h2 class="section-title">SON MESAJLAR</h2>
+                <div class="messages-container" id="messagesContainer">
+                    <!-- Mesajlar JavaScript ile buraya eklenecek -->
+                    <div class="empty-state">
+                        <p style="text-align: center; color: var(--text-muted); padding: 40px;">
+                            Mesajlar yükleniyor...
+                        </p>
+                    </div>
+                </div>
+            </section>
+        </div>
+        
+        <!-- SAĞ PANEL -->
+        <div class="right-panel">
+            <!-- İSTATİSTİKLER -->
+            <div class="stats-card">
+                <h3 class="stats-title">📊 CANLI İSTATİSTİKLER</h3>
+                <div class="stat-item">
+                    <span class="stat-label">Toplam Mesaj</span>
+                    <span class="stat-value" id="totalMessages">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Farklı Ziyaretçi</span>
+                    <span class="stat-value" id="uniqueVisitors">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Sunucu Saati</span>
+                    <span class="stat-value" id="serverTime">{{ current_time.strftime('%H:%M') }}</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Ziyaretçi ID</span>
+                    <span class="stat-value">{{ visitor_id }}</span>
+                </div>
+            </div>
+            
+            <!-- RENK PALETİ -->
+            <div class="color-palette">
+                <h3 class="palette-title">🎨 RENK PALETİ</h3>
+                <div class="color-grid">
+                    <div class="color-swatch color-red">KIRMIZI</div>
+                    <div class="color-swatch color-purple">MOR</div>
+                    <div class="color-swatch color-brown">KAHVE</div>
+                    <div class="color-swatch color-yellow">SARI</div>
+                    <div class="color-swatch color-black">SİYAH</div>
+                    <div class="color-swatch color-dark">KOYU</div>
+                </div>
+                <p style="text-align: center; margin-top: 20px; color: var(--text-muted); font-size: 0.9rem;">
+                    Renklere tıklayın! 🎯
+                </p>
+            </div>
+            
+            <!-- HIZLI BİLGİ -->
+            <div class="stats-card">
+                <h3 class="stats-title">⚡ HIZLI BİLGİ</h3>
+                <div style="color: var(--text-muted); line-height: 1.6; font-size: 1.1rem;">
+                    <p>✅ Kaygan panel efektleri</p>
+                    <p>✅ Gerçek zamanlı mesajlaşma</p>
+                    <p>✅ Dinamik typewriter animasyonu</p>
+                    <p>✅ Responsive tasarım</p>
+                    <p>✅ Canlı istatistikler</p>
+                    <p>✅ Özel renk paleti</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- FOOTER -->
+        <footer class="site-footer">
+            <p>🚀 ULTRA MEGA SÜPER SİTE v2.0 | © 2024 Serdar Şakirov | Tüm hakları saklıdır.</p>
+            <p style="margin-top: 10px; font-size: 0.8rem;">
+                Son güncelleme: {{ current_time.strftime('%d.%m.%Y %H:%M:%S') }} | 
+                Render + Flask + Modern CSS
+            </p>
+        </footer>
+    </div>
+    
+    <!-- JAVASCRIPT -->
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>

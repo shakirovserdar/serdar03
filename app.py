@@ -1,42 +1,69 @@
-from flask import Flask, render_template, request, redirect, url_for, g
-import sqlite3
+from flask import Flask, render_template, request, jsonify, session
 from datetime import datetime
+import json
 import os
+import uuid
 
 app = Flask(__name__)
-DATABASE = 'mesajlar.db'
+app.secret_key = os.environ.get('SECRET_KEY', 'ultra-mega-super-key-2024')
 
-def get_db():
-    db = getattr(g, '_database', None)
-    if db is None:
-        db = g._database = sqlite3.connect(DATABASE)
-        db.row_factory = sqlite3.Row
-    return db
+# Basit mesaj depolama (gerçek projede veritabanı kullanın)
+MESSAGES_FILE = 'messages.json'
 
-with app.app_context():
-    db = sqlite3.connect(DATABASE)
-    db.execute('''CREATE TABLE IF NOT EXISTS mesajlar
-                 (id INTEGER PRIMARY KEY AUTOINCREMENT,
-                  isim TEXT NOT NULL,
-                  mesaj TEXT NOT NULL,
-                  tarih TIMESTAMP DEFAULT CURRENT_TIMESTAMP)''')
-    db.commit()
-    print("✅ Veritabanı hazır!")
+def load_messages():
+    try:
+        with open(MESSAGES_FILE, 'r') as f:
+            return json.load(f)
+    except:
+        return []
 
-@app.route('/', methods=['GET', 'POST'])
+def save_messages(messages):
+    with open(MESSAGES_FILE, 'w') as f:
+        json.dump(messages, f, indent=2)
+
+@app.route('/')
 def index():
-    if request.method == 'POST':
-        isim = request.form['isim'].strip()
-        mesaj = request.form['mesaj'].strip()
-        if isim and mesaj:
-            conn = get_db()
-            conn.execute('INSERT INTO mesajlar (isim, mesaj) VALUES (?, ?)', (isim, mesaj))
-            conn.commit()
-        return redirect(url_for('index'))
+    if 'visitor_id' not in session:
+        session['visitor_id'] = str(uuid.uuid4())[:8]
+    
+    messages = load_messages()
+    return render_template('index.html', 
+                         messages=messages,
+                         visitor_id=session['visitor_id'],
+                         current_time=datetime.now())
 
-    conn = get_db()
-    mesajlar = conn.execute('SELECT * FROM mesajlar ORDER BY tarih DESC').fetchall()
-    return render_template('index.html', mesajlar=mesajlar, su_an=datetime.now())
+@app.route('/api/messages', methods=['GET', 'POST'])
+def handle_messages():
+    if request.method == 'POST':
+        data = request.json
+        messages = load_messages()
+        
+        new_message = {
+            'id': str(uuid.uuid4()),
+            'name': data.get('name', 'Anonim'),
+            'message': data.get('message', ''),
+            'time': datetime.now().strftime('%H:%M'),
+            'date': datetime.now().strftime('%d.%m.%Y'),
+            'visitor_id': session.get('visitor_id', 'unknown')
+        }
+        
+        messages.append(new_message)
+        save_messages(messages)
+        
+        return jsonify({'success': True, 'message': new_message})
+    
+    # GET isteği
+    messages = load_messages()
+    return jsonify({'messages': messages})
+
+@app.route('/api/stats')
+def get_stats():
+    messages = load_messages()
+    return jsonify({
+        'total_messages': len(messages),
+        'unique_visitors': len(set(m.get('visitor_id', '') for m in messages)),
+        'server_time': datetime.now().strftime('%H:%M:%S')
+    })
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=5000)
