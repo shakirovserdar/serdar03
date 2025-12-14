@@ -1,4 +1,4 @@
-/* ULTRA MEGA SÜPER TEMA - GÜNCELLENMİŞ */
+/* ULTRA MEGA SÜPER TEMA - TAB PANEL SİSTEMİ */
 :root {
     /* Koyu Renk Paleti */
     --dark-bg: #0a0a0f;
@@ -34,7 +34,7 @@ body {
     position: relative;
 }
 
-/* KAYGAN PANELLER İÇİN BACKGROUND ELEMENTLERİ */
+/* ARKA PLAN ELEMENTLERİ */
 .background-elements {
     position: fixed;
     top: 0;
@@ -85,20 +85,76 @@ body {
     max-width: 1400px;
     margin: 0 auto;
     padding: 30px;
-    display: grid;
-    grid-template-columns: 1fr 350px;
-    gap: 30px;
     min-height: 100vh;
 }
 
-/* SOL PANEL - ANA İÇERİK */
-.left-panel {
+/* TAB PANEL SİSTEMİ */
+.tabs-system {
     display: flex;
     flex-direction: column;
     gap: 30px;
 }
 
-/* HERO BÖLÜMÜ - GÜNCELLENDİ */
+/* TAB BUTONLARI */
+.tab-buttons {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.tab-btn {
+    padding: 18px 35px;
+    background: var(--glass-effect);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    color: var(--text-light);
+    font-size: 1.2rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    min-width: 180px;
+    text-align: center;
+}
+
+.tab-btn:hover {
+    transform: translateY(-3px);
+    border-color: var(--accent-purple);
+    box-shadow: var(--shadow-glow);
+}
+
+.tab-btn.active {
+    background: var(--gradient-primary);
+    border-color: transparent;
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(255, 46, 99, 0.4);
+}
+
+.tab-btn.active::after {
+    content: '↓';
+    position: absolute;
+    bottom: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 1.5rem;
+    color: var(--accent-yellow);
+}
+
+/* TAB İÇERİKLERİ */
+.tab-content {
+    display: none;
+    animation: fadeIn 0.5s ease-out;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* ANASAYFA TAB İÇERİĞİ */
 .hero-section {
     background: var(--glass-effect);
     backdrop-filter: blur(20px);
@@ -134,53 +190,122 @@ body {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    margin-bottom: 10px;
+    margin-bottom: 30px;
     letter-spacing: -1px;
     text-transform: uppercase;
 }
 
-.hero-subtitle {
-    font-size: 1.8rem;
-    color: var(--text-muted);
-    margin-bottom: 60px;
-    line-height: 1.4;
-}
-
-/* YENİ: HOŞGELDİNİZ KAYAN YAZI */
-.welcome-container {
+/* ANİMASYONLU YAZILAR */
+.animation-container {
+    height: 150px;
     width: 100%;
-    height: 120px;
     position: relative;
-    overflow: hidden;
     margin: 40px 0;
+    overflow: hidden;
+    border-radius: 20px;
+    background: rgba(0, 0, 0, 0.2);
 }
 
-.welcome-text {
+.animated-text {
     position: absolute;
-    bottom: -100px;
-    left: 0;
-    width: 100%;
-    font-size: 2.8rem;
-    font-weight: 700;
+    top: -100px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 3rem;
+    font-weight: 800;
     color: var(--accent-yellow);
     text-align: center;
-    animation: slideUpWelcome 2s ease-out 0.5s forwards;
-    text-shadow: 0 2px 10px rgba(255, 209, 102, 0.3);
+    opacity: 0;
+    white-space: nowrap;
+    padding: 20px 40px;
+    border-radius: 15px;
+    background: rgba(255, 209, 102, 0.1);
+    border: 2px solid rgba(255, 209, 102, 0.2);
+    animation: textFall 8s infinite linear;
+    text-shadow: 0 2px 10px rgba(255, 209, 102, 0.5);
 }
 
-@keyframes slideUpWelcome {
+.animated-text:nth-child(1) {
+    animation-delay: 0s;
+    color: var(--accent-red);
+}
+
+.animated-text:nth-child(2) {
+    animation-delay: 1.6s;
+    color: var(--accent-purple);
+}
+
+.animated-text:nth-child(3) {
+    animation-delay: 3.2s;
+    color: var(--accent-brown);
+}
+
+.animated-text:nth-child(4) {
+    animation-delay: 4.8s;
+    color: var(--accent-yellow);
+}
+
+.animated-text:nth-child(5) {
+    animation-delay: 6.4s;
+    color: #ffffff;
+}
+
+@keyframes textFall {
     0% {
-        bottom: -100px;
+        top: -100px;
         opacity: 0;
+        transform: translateX(-50%) scale(0.8);
+    }
+    15% {
+        top: 50%;
+        opacity: 1;
+        transform: translateX(-50%) translateY(-50%) scale(1);
+    }
+    30% {
+        top: 50%;
+        opacity: 1;
+        transform: translateX(-50%) translateY(-50%) scale(1);
+    }
+    45% {
+        top: 50%;
+        opacity: 1;
+        transform: translateX(-50%) translateY(-50%) scale(1);
+    }
+    60% {
+        top: 150px;
+        opacity: 0;
+        transform: translateX(-50%) scale(0.8);
     }
     100% {
-        bottom: 0;
-        opacity: 1;
+        top: 150px;
+        opacity: 0;
+        transform: translateX(-50%) scale(0.8);
     }
 }
 
-/* MESAJ FORMU */
-.message-form-section {
+/* ANA SAYFA İKİ SÜTUN */
+.home-content {
+    display: grid;
+    grid-template-columns: 1fr 350px;
+    gap: 30px;
+    margin-top: 30px;
+}
+
+@media (max-width: 1024px) {
+    .home-content {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* SOL PANEL - MESAJ FORMU VE MESAJLAR */
+.left-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.message-form-section,
+.messages-section {
     background: var(--glass-effect);
     backdrop-filter: blur(20px);
     border: 1px solid rgba(255, 255, 255, 0.1);
@@ -204,6 +329,7 @@ body {
     font-size: 1.3rem;
 }
 
+/* FORM STİLLERİ */
 .form-group {
     margin-bottom: 25px;
     position: relative;
@@ -276,16 +402,6 @@ body {
 }
 
 /* MESAJLAR LİSTESİ */
-.messages-section {
-    background: var(--glass-effect);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 25px;
-    padding: 40px;
-    box-shadow: var(--shadow-glow);
-    animation: slideUp 0.8s ease-out 0.4s both;
-}
-
 .messages-container {
     max-height: 500px;
     overflow-y: auto;
@@ -347,15 +463,15 @@ body {
     margin: 15px 0;
 }
 
-/* SAĞ PANEL - İSTATİSTİKLER VE KULLANICI BİLGİLERİ */
+/* SAĞ PANEL - KULLANICI BİLGİLERİ */
 .right-panel {
     display: flex;
     flex-direction: column;
     gap: 30px;
 }
 
-/* YENİ: KULLANICI BİLGİLERİ KARTI */
-.user-info-card {
+.user-info-card,
+.stats-card {
     background: var(--glass-effect);
     backdrop-filter: blur(20px);
     border: 1px solid rgba(255, 255, 255, 0.1);
@@ -381,10 +497,6 @@ body {
     gap: 8px;
 }
 
-.info-label::before {
-    font-size: 1rem;
-}
-
 .info-value {
     font-size: 1.2rem;
     font-weight: 700;
@@ -394,16 +506,6 @@ body {
 }
 
 /* İSTATİSTİKLER */
-.stats-card {
-    background: var(--glass-effect);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 25px;
-    padding: 30px;
-    box-shadow: var(--shadow-glow);
-    animation: slideUp 0.8s ease-out 0.5s both;
-}
-
 .stats-title {
     font-size: 1.5rem;
     margin-bottom: 25px;
@@ -433,57 +535,129 @@ body {
     background-clip: text;
 }
 
-/* COLOR PALETTE SHOWCASE */
-.color-palette {
+/* DİĞER TAB İÇERİKLERİ */
+.about-section,
+.projects-section,
+.contact-section {
     background: var(--glass-effect);
     backdrop-filter: blur(20px);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 25px;
-    padding: 30px;
+    padding: 50px;
     box-shadow: var(--shadow-glow);
-    animation: slideUp 0.8s ease-out 0.7s both;
+    animation: slideUp 0.8s ease-out;
+    min-height: 600px;
 }
 
-.palette-title {
-    font-size: 1.5rem;
-    margin-bottom: 25px;
-    color: var(--accent-yellow);
+.tab-content-title {
+    font-size: 3rem;
+    font-weight: 700;
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 40px;
     text-align: center;
 }
 
-.color-grid {
+/* HAKKIMDA TAB */
+.about-content {
+    font-size: 1.3rem;
+    line-height: 1.8;
+    color: var(--text-light);
+}
+
+.about-content p {
+    margin-bottom: 25px;
+}
+
+/* PROJELER TAB */
+.projects-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 30px;
+    margin-top: 40px;
+}
+
+.project-card {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 20px;
+    padding: 35px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.project-card:hover {
+    transform: translateY(-10px);
+    border-color: var(--accent-purple);
+    box-shadow: var(--shadow-glow);
+}
+
+.project-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--gradient-primary);
+}
+
+.project-title {
+    font-size: 1.8rem;
+    color: var(--accent-yellow);
+    margin-bottom: 15px;
+}
+
+.project-description {
+    color: var(--text-muted);
+    line-height: 1.6;
+    font-size: 1.1rem;
+}
+
+/* İLETİŞİM TAB */
+.contact-content {
+    font-size: 1.3rem;
+    line-height: 1.8;
+    color: var(--text-light);
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.contact-list {
+    list-style: none;
+    margin-top: 30px;
+}
+
+.contact-list li {
+    margin-bottom: 20px;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 15px;
+    border-left: 5px solid var(--accent-purple);
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
     gap: 15px;
 }
 
-.color-swatch {
-    height: 80px;
-    border-radius: 15px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 700;
-    color: white;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-    transition: transform 0.3s ease;
-    cursor: pointer;
+.contact-list li::before {
+    content: '📧';
+    font-size: 1.5rem;
 }
 
-.color-swatch:hover {
-    transform: scale(1.05);
+.contact-list li:nth-child(2)::before {
+    content: '📱';
 }
 
-.color-red { background: var(--accent-red); }
-.color-purple { background: var(--accent-purple); }
-.color-brown { background: var(--accent-brown); }
-.color-yellow { background: var(--accent-yellow); color: #000; }
-.color-black { background: var(--accent-black); }
-.color-dark { background: var(--dark-bg); }
+.contact-list li:nth-child(3)::before {
+    content: '📍';
+}
 
 /* FOOTER */
 .site-footer {
-    grid-column: 1 / -1;
     text-align: center;
     padding: 30px;
     color: var(--text-muted);
@@ -521,11 +695,6 @@ body {
     }
 }
 
-@keyframes glow {
-    0%, 100% { box-shadow: 0 0 20px rgba(255, 46, 99, 0.3); }
-    50% { box-shadow: 0 0 40px rgba(255, 46, 99, 0.6); }
-}
-
 /* SCROLLBAR */
 ::-webkit-scrollbar {
     width: 10px;
@@ -548,33 +717,32 @@ body {
 /* RESPONSIVE */
 @media (max-width: 1024px) {
     .main-container {
-        grid-template-columns: 1fr;
-    }
-    
-    .right-panel {
-        order: -1;
+        padding: 15px;
     }
     
     .hero-title {
         font-size: 3.5rem;
     }
     
-    .welcome-text {
-        font-size: 2.2rem;
+    .tab-btn {
+        min-width: 140px;
+        padding: 15px 25px;
+    }
+    
+    .animated-text {
+        font-size: 2.5rem;
     }
 }
 
 @media (max-width: 768px) {
-    .main-container {
-        padding: 15px;
-    }
-    
     .hero-section,
     .message-form-section,
     .messages-section,
-    .stats-card,
-    .color-palette,
-    .user-info-card {
+    .about-section,
+    .projects-section,
+    .contact-section,
+    .user-info-card,
+    .stats-card {
         padding: 25px;
     }
     
@@ -582,12 +750,23 @@ body {
         font-size: 2.8rem;
     }
     
-    .welcome-text {
-        font-size: 1.8rem;
+    .animated-text {
+        font-size: 2rem;
+        white-space: normal;
     }
     
-    .color-grid {
-        grid-template-columns: repeat(2, 1fr);
+    .tab-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .tab-btn {
+        width: 100%;
+        max-width: 300px;
+    }
+    
+    .projects-grid {
+        grid-template-columns: 1fr;
     }
     
     .user-info-item {

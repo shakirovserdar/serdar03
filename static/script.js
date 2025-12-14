@@ -1,8 +1,38 @@
-// ULTRA MEGA SÜPER INTERACTIVE SCRIPT - GÜNCELLENMİŞ
+// SERDAR SHAKIROV - TAB PANEL SİSTEMİ
 
 document.addEventListener('DOMContentLoaded', function() {
-    // Kaygan "Hoş geldiniz" yazısı
-    const welcomeText = document.querySelector('.welcome-text');
+    // TAB PANEL SİSTEMİ
+    const tabButtons = document.querySelectorAll('.tab-btn');
+    const tabContents = document.querySelectorAll('.tab-content');
+    
+    // İlk açılışta sadece Anasayfa gösterilsin
+    tabButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const tabId = this.getAttribute('data-tab');
+            
+            // Tüm butonlardan aktif sınıfını kaldır
+            tabButtons.forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Tüm içerikleri gizle
+            tabContents.forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Tıklanan butonu aktif yap
+            this.classList.add('active');
+            
+            // İlgili içeriği göster
+            document.getElementById(tabId).classList.add('active');
+            
+            // Eğer Anasayfa'ya döndüysek istatistikleri güncelle
+            if (tabId === 'home') {
+                updateStats();
+                updateUserInfo();
+            }
+        });
+    });
     
     // Kullanıcı bilgilerini güncelle
     async function updateUserInfo() {
@@ -39,10 +69,10 @@ document.addEventListener('DOMContentLoaded', function() {
         } catch (error) {
             console.error('Kullanıcı bilgileri alınamadı:', error);
             
-            // Varsayılan değerler (Krasnodar, Rusya)
+            // Varsayılan değerler
             document.getElementById('userIp').textContent = 'IP alınamadı';
-            document.getElementById('userCountry').textContent = 'Rusya';
-            document.getElementById('userCity').textContent = 'Krasnodar';
+            document.getElementById('userCountry').textContent = 'Bilinmiyor';
+            document.getElementById('userCity').textContent = 'Bilinmiyor';
             document.getElementById('userTimezone').textContent = 'Europe/Moscow';
             document.getElementById('userISP').textContent = 'Bilinmiyor';
             
@@ -114,64 +144,66 @@ document.addEventListener('DOMContentLoaded', function() {
     const messageForm = document.getElementById('messageForm');
     const messagesContainer = document.getElementById('messagesContainer');
     
-    messageForm.addEventListener('submit', async function(e) {
-        e.preventDefault();
-        
-        const nameInput = document.getElementById('nameInput');
-        const messageInput = document.getElementById('messageInput');
-        const submitBtn = document.querySelector('.submit-btn');
-        
-        const originalText = submitBtn.textContent;
-        submitBtn.textContent = 'GÖNDERİLİYOR...';
-        submitBtn.disabled = true;
-        
-        try {
-            const response = await fetch('/api/messages', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    name: nameInput.value,
-                    message: messageInput.value
-                })
-            });
+    if (messageForm) {
+        messageForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
             
-            const data = await response.json();
+            const nameInput = document.getElementById('nameInput');
+            const messageInput = document.getElementById('messageInput');
+            const submitBtn = document.querySelector('.submit-btn');
             
-            if (data.success) {
-                // Yeni mesajı listeye ekle
-                addMessageToUI(data.message);
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = 'GÖNDERİLİYOR...';
+            submitBtn.disabled = true;
+            
+            try {
+                const response = await fetch('/api/messages', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        name: nameInput.value,
+                        message: messageInput.value
+                    })
+                });
                 
-                // Formu temizle
-                nameInput.value = '';
-                messageInput.value = '';
+                const data = await response.json();
                 
-                // Başarı animasyonu
-                submitBtn.textContent = '✓ GÖNDERİLDİ!';
-                submitBtn.style.background = 'linear-gradient(135deg, #4CAF50, #2E7D32)';
+                if (data.success) {
+                    // Yeni mesajı listeye ekle
+                    addMessageToUI(data.message);
+                    
+                    // Formu temizle
+                    nameInput.value = '';
+                    messageInput.value = '';
+                    
+                    // Başarı animasyonu
+                    submitBtn.textContent = '✓ GÖNDERİLDİ!';
+                    submitBtn.style.background = 'linear-gradient(135deg, #4CAF50, #2E7D32)';
+                    
+                    setTimeout(() => {
+                        submitBtn.textContent = originalText;
+                        submitBtn.style.background = '';
+                        submitBtn.disabled = false;
+                    }, 2000);
+                    
+                    // İstatistikleri güncelle
+                    updateStats();
+                }
+            } catch (error) {
+                console.error('Hata:', error);
+                submitBtn.textContent = '❌ HATA!';
+                submitBtn.style.background = 'linear-gradient(135deg, #f44336, #c62828)';
                 
                 setTimeout(() => {
                     submitBtn.textContent = originalText;
                     submitBtn.style.background = '';
                     submitBtn.disabled = false;
                 }, 2000);
-                
-                // İstatistikleri güncelle
-                updateStats();
             }
-        } catch (error) {
-            console.error('Hata:', error);
-            submitBtn.textContent = '❌ HATA!';
-            submitBtn.style.background = 'linear-gradient(135deg, #f44336, #c62828)';
-            
-            setTimeout(() => {
-                submitBtn.textContent = originalText;
-                submitBtn.style.background = '';
-                submitBtn.disabled = false;
-            }, 2000);
-        }
-    });
+        });
+    }
     
     // Mesajları UI'ya ekleme fonksiyonu
     function addMessageToUI(message) {
@@ -206,48 +238,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // Renk paleti etkileşimi
-    const colorSwatches = document.querySelectorAll('.color-swatch');
-    colorSwatches.forEach(swatch => {
-        swatch.addEventListener('click', function() {
-            const colorName = this.textContent;
-            
-            // Geçici feedback
-            const originalText = this.textContent;
-            this.textContent = '✓ SEÇİLDİ!';
-            
-            setTimeout(() => {
-                this.textContent = originalText;
-            }, 1000);
-        });
-    });
-    
-    // Kaygan panel efekti için mousemove
-    document.addEventListener('mousemove', function(e) {
-        const cards = document.querySelectorAll('.message-card, .stats-card, .color-palette, .user-info-card');
-        
-        cards.forEach(card => {
-            const rect = card.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            
-            if (x > 0 && x < rect.width && y > 0 && y < rect.height) {
-                const centerX = rect.width / 2;
-                const centerY = rect.height / 2;
-                
-                const rotateX = (y - centerY) / 25;
-                const rotateY = (centerX - x) / 25;
-                
-                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(10px)`;
-                card.style.boxShadow = `${rotateY * 2}px ${rotateX * 2}px 30px rgba(0, 0, 0, 0.3)`;
-            } else {
-                card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateZ(0)';
-                card.style.boxShadow = 'var(--shadow-glow)';
-            }
-        });
-    });
-    
-    // Sayfa yüklendiğinde mesajları yükle
+    // Sayfa yüklendiğinde mesajları getir
     async function loadMessages() {
         try {
             const response = await fetch('/api/messages');
@@ -276,18 +267,42 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // Hoş geldiniz yazısı için hover efekti
-    welcomeText.addEventListener('mouseenter', function() {
-        this.style.transform = 'scale(1.05)';
-        this.style.textShadow = '0 5px 20px rgba(255, 209, 102, 0.5)';
-    });
-    
-    welcomeText.addEventListener('mouseleave', function() {
-        this.style.transform = 'scale(1)';
-        this.style.textShadow = '0 2px 10px rgba(255, 209, 102, 0.3)';
+    // Kaygan panel efekti için mousemove
+    document.addEventListener('mousemove', function(e) {
+        const cards = document.querySelectorAll('.message-card, .project-card');
+        
+        cards.forEach(card => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            if (x > 0 && x < rect.width && y > 0 && y < rect.height) {
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                const rotateX = (y - centerY) / 25;
+                const rotateY = (centerX - x) / 25;
+                
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(10px)`;
+                card.style.boxShadow = `${rotateY * 2}px ${rotateX * 2}px 30px rgba(0, 0, 0, 0.3)`;
+            } else {
+                card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateZ(0)';
+                card.style.boxShadow = '';
+            }
+        });
     });
     
     // Sayfa yüklendiğinde çalışacak fonksiyonlar
+    if (window.location.hash) {
+        // Hash varsa ilgili tab'i aç
+        const tabId = window.location.hash.substring(1);
+        const tabButton = document.querySelector(`.tab-btn[data-tab="${tabId}"]`);
+        if (tabButton) {
+            tabButton.click();
+        }
+    }
+    
+    // Başlangıç fonksiyonlarını çalıştır
     loadMessages();
     updateUserInfo();
     
