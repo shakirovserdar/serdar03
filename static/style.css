@@ -195,59 +195,94 @@ body {
     text-transform: uppercase;
 }
 
-/* ANİMASYONLU YAZILAR */
+/* ESKİ ANİMASYON KODUNU BUL VE SİL */
+/* .animated-text ve @keyframes textFall kısmını komple sil */
+
+/* YENİ ANİMASYONLU YAZILAR */
 .animation-container {
     height: 150px;
     width: 100%;
     position: relative;
     margin: 40px 0;
     overflow: hidden;
-    border-radius: 20px;
-    background: rgba(0, 0, 0, 0.2);
 }
 
 .animated-text {
     position: absolute;
-    top: -100px;
+    top: 100%;
     left: 50%;
     transform: translateX(-50%);
-    font-size: 3rem;
+    font-size: 3.5rem;
     font-weight: 800;
     color: var(--accent-yellow);
     text-align: center;
     opacity: 0;
     white-space: nowrap;
-    padding: 20px 40px;
-    border-radius: 15px;
-    background: rgba(255, 209, 102, 0.1);
-    border: 2px solid rgba(255, 209, 102, 0.2);
-    animation: textFall 8s infinite linear;
-    text-shadow: 0 2px 10px rgba(255, 209, 102, 0.5);
+    animation: textSequence 25s infinite linear;
+    text-shadow: 0 2px 15px rgba(255, 209, 102, 0.6);
+    /* Çerçeve kaldırıldı - sade metin */
 }
 
+@keyframes textSequence {
+    0% {
+        top: 100%;
+        opacity: 0;
+        transform: translateX(-50%) translateY(0);
+    }
+    5% {
+        top: 50%;
+        opacity: 1;
+        transform: translateX(-50%) translateY(-50%);
+    }
+    15% {
+        top: 50%;
+        opacity: 1;
+        transform: translateX(-50%) translateY(-50%);
+    }
+    20% {
+        top: 50%;
+        opacity: 0;
+        transform: translateX(-50%) translateY(-50%);
+    }
+    100% {
+        top: 50%;
+        opacity: 0;
+        transform: translateX(-50%) translateY(-50%);
+    }
+}
+
+/* Her yazı için farklı renk ve animasyon başlangıcı */
 .animated-text:nth-child(1) {
-    animation-delay: 0s;
     color: var(--accent-red);
+    animation-delay: 0s;
 }
 
 .animated-text:nth-child(2) {
-    animation-delay: 1.6s;
     color: var(--accent-purple);
+    animation-delay: 5s;
 }
 
 .animated-text:nth-child(3) {
-    animation-delay: 3.2s;
     color: var(--accent-brown);
+    animation-delay: 10s;
 }
 
 .animated-text:nth-child(4) {
-    animation-delay: 4.8s;
     color: var(--accent-yellow);
+    animation-delay: 15s;
 }
 
 .animated-text:nth-child(5) {
-    animation-delay: 6.4s;
     color: #ffffff;
+    animation-delay: 20s;
+}
+
+/* Responsive için */
+@media (max-width: 768px) {
+    .animated-text {
+        font-size: 2.5rem;
+        white-space: normal;
+    }
 }
 
 @keyframes textFall {
