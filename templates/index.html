@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🚀 SERDAR SHAKIROV | ULTRA MEGA SÜPER SİTE</title>
+    <title>🚀 SERDAR SHAKIROV | KİŞİSEL SİTE</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔥</text></svg>">
 </head>
@@ -22,14 +22,15 @@
             <!-- HERO BÖLÜMÜ -->
             <section class="hero-section">
                 <h1 class="hero-title">SERDAR SHAKIROV</h1>
-                <p class="hero-subtitle">ULTRA MEGA SÜPER DİJİTAL PLATFORM</p>
+                <p class="hero-subtitle">KİŞİSEL DİJİTAL PLATFORM</p>
                 
-                <div class="typewriter-container">
-                    <span class="typewriter-text" id="typewriterText"></span>
+                <!-- HOŞGELDİNİZ KAYAN YAZI -->
+                <div class="welcome-container">
+                    <div class="welcome-text">HOŞ GELDİNİZ, NASIL YARDIMCI OLABİLİRİM?</div>
                 </div>
                 
-                <div style="margin-top: 40px; color: var(--text-muted); font-size: 1.2rem;">
-                    <p>✨ Modern teknoloji + Sanatsal tasarım = Bu site</p>
+                <div style="margin-top: 60px; color: var(--text-muted); font-size: 1.2rem;">
+                    <p>✨ Modern teknoloji ve sanatsal tasarımın birleşimi</p>
                     <p style="margin-top: 10px;">🚀 Kaygan paneller • Canlı etkileşim • Dinamik animasyonlar</p>
                 </div>
             </section>
@@ -80,9 +81,49 @@
         
         <!-- SAĞ PANEL -->
         <div class="right-panel">
+            <!-- KULLANICI BİLGİLERİ -->
+            <div class="user-info-card">
+                <h3 class="section-title">👤 KULLANICI BİLGİLERİNİZ</h3>
+                
+                <div class="user-info-item">
+                    <span class="info-label">🌐 IP Adresiniz:</span>
+                    <span class="info-value" id="userIp">Yükleniyor...</span>
+                </div>
+                
+                <div class="user-info-item">
+                    <span class="info-label">📍 Ülkeniz:</span>
+                    <span class="info-value" id="userCountry">Yükleniyor...</span>
+                </div>
+                
+                <div class="user-info-item">
+                    <span class="info-label">🏙️ Şehriniz:</span>
+                    <span class="info-value" id="userCity">Yükleniyor...</span>
+                </div>
+                
+                <div class="user-info-item">
+                    <span class="info-label">🕐 Saat Diliminiz:</span>
+                    <span class="info-value" id="userTimezone">Yükleniyor...</span>
+                </div>
+                
+                <div class="user-info-item">
+                    <span class="info-label">⏰ Yerel Saatiniz:</span>
+                    <span class="info-value" id="userLocalTime">Yükleniyor...</span>
+                </div>
+                
+                <div class="user-info-item">
+                    <span class="info-label">📡 İnternet Sağlayıcınız:</span>
+                    <span class="info-value" id="userISP">Yükleniyor...</span>
+                </div>
+                
+                <div class="user-info-item">
+                    <span class="info-label">💻 Cihazınız:</span>
+                    <span class="info-value" id="userDevice">Yükleniyor...</span>
+                </div>
+            </div>
+            
             <!-- İSTATİSTİKLER -->
             <div class="stats-card">
-                <h3 class="stats-title">📊 CANLI İSTATİSTİKLER</h3>
+                <h3 class="stats-title">📊 SİTE İSTATİSTİKLERİ</h3>
                 <div class="stat-item">
                     <span class="stat-label">Toplam Mesaj</span>
                     <span class="stat-value" id="totalMessages">0</span>
@@ -93,7 +134,7 @@
                 </div>
                 <div class="stat-item">
                     <span class="stat-label">Sunucu Saati</span>
-                    <span class="stat-value" id="serverTime">{{ current_time.strftime('%H:%M') }}</span>
+                    <span class="stat-value" id="serverTime">{{ current_time.strftime('%H:%M:%S') }}</span>
                 </div>
                 <div class="stat-item">
                     <span class="stat-label">Ziyaretçi ID</span>
@@ -113,30 +154,17 @@
                     <div class="color-swatch color-dark">KOYU</div>
                 </div>
                 <p style="text-align: center; margin-top: 20px; color: var(--text-muted); font-size: 0.9rem;">
-                    Renklere tıklayın! 🎯
+                    Sizin için özel seçilmiş renkler 🎯
                 </p>
-            </div>
-            
-            <!-- HIZLI BİLGİ -->
-            <div class="stats-card">
-                <h3 class="stats-title">⚡ HIZLI BİLGİ</h3>
-                <div style="color: var(--text-muted); line-height: 1.6; font-size: 1.1rem;">
-                    <p>✅ Kaygan panel efektleri</p>
-                    <p>✅ Gerçek zamanlı mesajlaşma</p>
-                    <p>✅ Dinamik typewriter animasyonu</p>
-                    <p>✅ Responsive tasarım</p>
-                    <p>✅ Canlı istatistikler</p>
-                    <p>✅ Özel renk paleti</p>
-                </div>
             </div>
         </div>
         
         <!-- FOOTER -->
         <footer class="site-footer">
-            <p>🚀 ULTRA MEGA SÜPER SİTE v2.0 | © 2024 Serdar Şakirov | Tüm hakları saklıdır.</p>
+            <p>🚀 SERDAR SHAKIROV KİŞİSEL SİTESİ | © 2024 Tüm hakları saklıdır.</p>
             <p style="margin-top: 10px; font-size: 0.8rem;">
                 Son güncelleme: {{ current_time.strftime('%d.%m.%Y %H:%M:%S') }} | 
-                Render + Flask + Modern CSS
+                Mevcut saat dilimi: {{ user_timezone }}
             </p>
         </footer>
     </div>

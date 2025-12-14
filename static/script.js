@@ -1,52 +1,114 @@
-// ULTRA MEGA SÜPER INTERACTIVE SCRIPT
+// ULTRA MEGA SÜPER INTERACTIVE SCRIPT - GÜNCELLENMİŞ
 
 document.addEventListener('DOMContentLoaded', function() {
-    // Typewriter efekti
-    const typewriterText = document.getElementById('typewriterText');
-    const messages = [
-        "BEN SERDAR SHAKIROV'UN SİTESİYİM",
-        "SİZE NASIL YARDIMCI OLABİLİRİM?",
-        "MESAJ GÖNDEREBİLİRSİNİZ",
-        "PROJELERİMİ İNCELEYEBİLİRSİNİZ",
-        "BENİMLE İLETİŞİME GEÇEBİLİRSİNİZ"
-    ];
+    // Kaygan "Hoş geldiniz" yazısı
+    const welcomeText = document.querySelector('.welcome-text');
     
-    let messageIndex = 0;
-    let charIndex = 0;
-    let isDeleting = false;
-    let isPaused = false;
-    
-    function typeWriter() {
-        if (isPaused) return;
-        
-        const currentMessage = messages[messageIndex];
-        
-        if (!isDeleting && charIndex <= currentMessage.length) {
-            typewriterText.textContent = currentMessage.substring(0, charIndex);
-            charIndex++;
-            setTimeout(typeWriter, 100);
-        } else if (isDeleting && charIndex >= 0) {
-            typewriterText.textContent = currentMessage.substring(0, charIndex);
-            charIndex--;
-            setTimeout(typeWriter, 50);
-        } else {
-            isDeleting = !isDeleting;
+    // Kullanıcı bilgilerini güncelle
+    async function updateUserInfo() {
+        try {
+            const response = await fetch('/api/userinfo');
+            const data = await response.json();
             
-            if (!isDeleting) {
-                messageIndex = (messageIndex + 1) % messages.length;
-            }
+            // IP Adresi
+            document.getElementById('userIp').textContent = data.ip || 'Bilinmiyor';
             
-            // Mesajlar arası bekleme
-            isPaused = true;
-            setTimeout(() => {
-                isPaused = false;
-                typeWriter();
-            }, 1500);
+            // Ülke
+            document.getElementById('userCountry').textContent = data.country || 'Bilinmiyor';
+            
+            // Şehir
+            document.getElementById('userCity').textContent = data.city || 'Bilinmiyor';
+            
+            // Saat dilimi
+            const timezone = data.timezone || 'Europe/Moscow';
+            document.getElementById('userTimezone').textContent = timezone;
+            
+            // İnternet sağlayıcısı
+            document.getElementById('userISP').textContent = data.isp || 'Bilinmiyor';
+            
+            // Cihaz ve tarayıcı bilgisi
+            const deviceInfo = getDeviceInfo();
+            document.getElementById('userDevice').textContent = deviceInfo;
+            
+            // Kullanıcının yerel saatini göster
+            updateLocalTime(timezone);
+            
+            // Saati her saniye güncelle
+            setInterval(() => updateLocalTime(timezone), 1000);
+            
+        } catch (error) {
+            console.error('Kullanıcı bilgileri alınamadı:', error);
+            
+            // Varsayılan değerler (Krasnodar, Rusya)
+            document.getElementById('userIp').textContent = 'IP alınamadı';
+            document.getElementById('userCountry').textContent = 'Rusya';
+            document.getElementById('userCity').textContent = 'Krasnodar';
+            document.getElementById('userTimezone').textContent = 'Europe/Moscow';
+            document.getElementById('userISP').textContent = 'Bilinmiyor';
+            
+            updateLocalTime('Europe/Moscow');
         }
     }
     
-    // Typewriter'ı başlat
-    setTimeout(typeWriter, 1000);
+    // Kullanıcının yerel saatini güncelle
+    function updateLocalTime(timezone) {
+        try {
+            const now = new Date();
+            const options = {
+                timeZone: timezone,
+                hour12: false,
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric'
+            };
+            
+            const formatter = new Intl.DateTimeFormat('tr-TR', options);
+            const formattedTime = formatter.format(now);
+            
+            document.getElementById('userLocalTime').textContent = formattedTime;
+        } catch (error) {
+            console.error('Saat güncellenemedi:', error);
+            document.getElementById('userLocalTime').textContent = 'Saat alınamadı';
+        }
+    }
+    
+    // Cihaz ve tarayıcı bilgisini al
+    function getDeviceInfo() {
+        const userAgent = navigator.userAgent;
+        let device = 'Bilinmeyen Cihaz';
+        let browser = 'Bilinmeyen Tarayıcı';
+        
+        // Cihaz tespiti
+        if (userAgent.match(/Android/i)) {
+            device = 'Android';
+        } else if (userAgent.match(/iPhone|iPad|iPod/i)) {
+            device = 'iOS';
+        } else if (userAgent.match(/Windows/i)) {
+            device = 'Windows';
+        } else if (userAgent.match(/Mac/i)) {
+            device = 'Mac';
+        } else if (userAgent.match(/Linux/i)) {
+            device = 'Linux';
+        }
+        
+        // Tarayıcı tespiti
+        if (userAgent.match(/Chrome/i) && !userAgent.match(/Edg/i)) {
+            browser = 'Chrome';
+        } else if (userAgent.match(/Firefox/i)) {
+            browser = 'Firefox';
+        } else if (userAgent.match(/Safari/i) && !userAgent.match(/Chrome/i)) {
+            browser = 'Safari';
+        } else if (userAgent.match(/Edg/i)) {
+            browser = 'Edge';
+        } else if (userAgent.match(/Opera|OPR/i)) {
+            browser = 'Opera';
+        }
+        
+        return `${device} / ${browser}`;
+    }
     
     // Form gönderme
     const messageForm = document.getElementById('messageForm');
@@ -144,7 +206,48 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // Sayfa yüklendiğinde mesajları getir
+    // Renk paleti etkileşimi
+    const colorSwatches = document.querySelectorAll('.color-swatch');
+    colorSwatches.forEach(swatch => {
+        swatch.addEventListener('click', function() {
+            const colorName = this.textContent;
+            
+            // Geçici feedback
+            const originalText = this.textContent;
+            this.textContent = '✓ SEÇİLDİ!';
+            
+            setTimeout(() => {
+                this.textContent = originalText;
+            }, 1000);
+        });
+    });
+    
+    // Kaygan panel efekti için mousemove
+    document.addEventListener('mousemove', function(e) {
+        const cards = document.querySelectorAll('.message-card, .stats-card, .color-palette, .user-info-card');
+        
+        cards.forEach(card => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            if (x > 0 && x < rect.width && y > 0 && y < rect.height) {
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                const rotateX = (y - centerY) / 25;
+                const rotateY = (centerX - x) / 25;
+                
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(10px)`;
+                card.style.boxShadow = `${rotateY * 2}px ${rotateX * 2}px 30px rgba(0, 0, 0, 0.3)`;
+            } else {
+                card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateZ(0)';
+                card.style.boxShadow = 'var(--shadow-glow)';
+            }
+        });
+    });
+    
+    // Sayfa yüklendiğinde mesajları yükle
     async function loadMessages() {
         try {
             const response = await fetch('/api/messages');
@@ -173,70 +276,21 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // Renk paleti etkileşimi
-    const colorSwatches = document.querySelectorAll('.color-swatch');
-    colorSwatches.forEach(swatch => {
-        swatch.addEventListener('click', function() {
-            const colorName = this.textContent;
-            
-            // Geçici feedback
-            const originalText = this.textContent;
-            this.textContent = '✓ SEÇİLDİ!';
-            
-            setTimeout(() => {
-                this.textContent = originalText;
-            }, 1000);
-            
-            // Renk değişikliği efekti
-            document.documentElement.style.setProperty('--accent-red', getComputedStyle(this).backgroundColor);
-        });
+    // Hoş geldiniz yazısı için hover efekti
+    welcomeText.addEventListener('mouseenter', function() {
+        this.style.transform = 'scale(1.05)';
+        this.style.textShadow = '0 5px 20px rgba(255, 209, 102, 0.5)';
     });
     
-    // Kaygan panel efekti için mousemove
-    document.addEventListener('mousemove', function(e) {
-        const cards = document.querySelectorAll('.message-card, .stats-card, .color-palette');
-        
-        cards.forEach(card => {
-            const rect = card.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            
-            if (x > 0 && x < rect.width && y > 0 && y < rect.height) {
-                const centerX = rect.width / 2;
-                const centerY = rect.height / 2;
-                
-                const rotateX = (y - centerY) / 25;
-                const rotateY = (centerX - x) / 25;
-                
-                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(10px)`;
-                card.style.boxShadow = `${rotateY * 2}px ${rotateX * 2}px 30px rgba(0, 0, 0, 0.3)`;
-            } else {
-                card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateZ(0)';
-                card.style.boxShadow = 'var(--shadow-glow)';
-            }
-        });
+    welcomeText.addEventListener('mouseleave', function() {
+        this.style.transform = 'scale(1)';
+        this.style.textShadow = '0 2px 10px rgba(255, 209, 102, 0.3)';
     });
     
-    // Sayfa yüklendiğinde mesajları yükle
+    // Sayfa yüklendiğinde çalışacak fonksiyonlar
     loadMessages();
+    updateUserInfo();
     
     // İstatistikleri her 30 saniyede bir güncelle
     setInterval(updateStats, 30000);
-    
-    // Gece/gündüz efekti (saate göre)
-    function updateTimeBasedTheme() {
-        const hour = new Date().getHours();
-        const isNight = hour < 6 || hour > 18;
-        
-        if (isNight) {
-            document.documentElement.style.setProperty('--dark-bg', '#050508');
-            document.documentElement.style.setProperty('--card-bg', '#0f0f1a');
-        } else {
-            document.documentElement.style.setProperty('--dark-bg', '#0a0a0f');
-            document.documentElement.style.setProperty('--card-bg', '#151520');
-        }
-    }
-    
-    updateTimeBasedTheme();
-    setInterval(updateTimeBasedTheme, 60000);
 });
